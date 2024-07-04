@@ -11,30 +11,45 @@
 	</noscript>
 </head>
 
-<body class="is-preload">
+<body>
+	<h1>CRC Calculator</h1>
+	<form id="uploadForm" enctype="multipart/form-data">
+		<input type="file" id="fileInput" name="file" accept=".bin,.hex">
+		<button type="button" onclick="uploadFile()">Upload</button>
+	</form>
+	<p id="result"></p>
+	<script>
+		function uploadFile() {
+			const formData = new FormData();
+			const fileInput = document.getElementById('fileInput');
+			formData.append('file', fileInput.files[0]);
 
-	<!-- Wrapper -->
-	<div id="wrapper" class="divided">
+			fetch('/upload', {
+				method: 'POST',
+				body: formData
+			})
+				.then(response => response.json())
+				.then(data => {
+					document.getElementById('result').innerText = 'CRC Value: ' + data.crc;
+				})
+				.catch(error => {
+					console.error('Error:', error);
+				});
+		}
+	</script>
+</body>
 
-		<!-- One -->
-		<section class="banner style1 orient-left content-align-left">
-			<div class="content content-align-left">
-				<h1>CRC Calculate from any file</h1>
+</html>
 
 
-			</div>
-		</section>
-	</div>
-
-
-	<!-- Scripts -->
-	<script src="assets/js/jquery.min.js"></script>
-	<script src="assets/js/jquery.scrollex.min.js"></script>
-	<script src="assets/js/jquery.scrolly.min.js"></script>
-	<script src="assets/js/browser.min.js"></script>
-	<script src="assets/js/breakpoints.min.js"></script>
-	<script src="assets/js/util.js"></script>
-	<script src="assets/js/main.js"></script>
+<!-- Scripts -->
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/jquery.scrollex.min.js"></script>
+<script src="assets/js/jquery.scrolly.min.js"></script>
+<script src="assets/js/browser.min.js"></script>
+<script src="assets/js/breakpoints.min.js"></script>
+<script src="assets/js/util.js"></script>
+<script src="assets/js/main.js"></script>
 
 </body>
 
