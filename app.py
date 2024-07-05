@@ -12,16 +12,25 @@ def calculate_crc(data):
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
-    if 'file' not in request.files:
-        return jsonify({'error': 'No file part'})
-    file = request.files['file']
-    if file.filename == '':
-        return jsonify({'error': 'No selected file'})
-    if file:
+    if 'files' not in request.files:
+        return jsonify({'error': 'No files part'})
+    
+    files = request.files.getlist('files')
+    if not files:
+        return jsonify({'error': 'No selected files'})
+
+    crc_values = {}
+    for file in files:
+        if file.filename == '':
+            continue
         data = file.read()
         crc_value = calculate_crc(data)
-        return jsonify({'crc': crc_value})
-    return jsonify({'error': 'File processing error'})
+        crc_values[file.filename] = {
+            'decimal': crc_value,
+            'hex': hex(crc_value)
+        }
+
+    return jsonify({'crc_values': crc_values})
 
 @app.route('/')
 def index():

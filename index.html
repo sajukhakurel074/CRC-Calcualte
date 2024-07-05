@@ -10,7 +10,7 @@
 <body>
 	<h1>CRC Calculator</h1>
 	<form id="uploadForm" enctype="multipart/form-data">
-		<input type="file" id="fileInput" name="file" accept=".bin,.hex">
+		<input type="file" id="fileInput" name="files" accept=".bin,.hex" multiple>
 		<button type="button" onclick="uploadFile()">Upload</button>
 	</form>
 	<p id="result"></p>
@@ -18,7 +18,11 @@
 		function uploadFile() {
 			const formData = new FormData();
 			const fileInput = document.getElementById('fileInput');
-			formData.append('file', fileInput.files[0]);
+			const files = fileInput.files;
+
+			for (let i = 0; i < files.length; i++) {
+				formData.append('files', files[i]);
+			}
 
 			fetch('/upload', {
 				method: 'POST',
@@ -26,7 +30,12 @@
 			})
 				.then(response => response.json())
 				.then(data => {
-					document.getElementById('result').innerText = 'CRC Value: ' + data.crc;
+					let resultText = 'CRC Values:\n';
+					for (const file in data.crc_values) {
+						const crcValue = data.crc_values[file];
+						resultText += `${file} - Decimal: ${crcValue.decimal}, Hex: ${crcValue.hex}\n`;
+					}
+					document.getElementById('result').innerText = resultText;
 				})
 				.catch(error => {
 					console.error('Error:', error);
