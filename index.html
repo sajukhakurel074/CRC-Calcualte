@@ -1,14 +1,10 @@
-<!DOCTYPE HTML>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
-	<title>CRC Calculate</title>
-	<meta charset="utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-	<link rel="stylesheet" href="assets/css/main.css" />
-	<noscript>
-		<link rel="stylesheet" href="assets/css/noscript.css" />
-	</noscript>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>CRC Calculator</title>
 </head>
 
 <body>
@@ -24,7 +20,7 @@
 			const fileInput = document.getElementById('fileInput');
 			formData.append('file', fileInput.files[0]);
 
-			fetch('https://crc-calculate-no1pdlpsw-saju-khakurels-projects.vercel.app/api/upload', {
+			fetch('/upload', {
 				method: 'POST',
 				body: formData
 			})
@@ -37,14 +33,6 @@
 				});
 		}
 	</script>
-	<!-- Correct paths to your JavaScript files -->
-	<script src="assets/js/jquery.min.js"></script>
-	<script src="assets/js/jquery.scrollex.min.js"></script>
-	<script src="assets/js/jquery.scrolly.min.js"></script>
-	<script src="assets/js/browser.min.js"></script>
-	<script src="assets/js/breakpoints.min.js"></script>
-	<script src="assets/js/util.js"></script>
-	<script src="assets/js/main.js"></script>
 </body>
 
 </html>
