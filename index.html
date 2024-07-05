@@ -5,15 +5,93 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>CRC Calculator</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			background-color: #f4f4f4;
+			margin: 0;
+			padding: 20px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			height: 100vh;
+		}
+
+		.container {
+			background-color: #fff;
+			padding: 20px;
+			border-radius: 8px;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+			max-width: 600px;
+			width: 100%;
+		}
+
+		h1 {
+			text-align: center;
+			color: #333;
+		}
+
+		form {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			margin-bottom: 20px;
+		}
+
+		input[type="file"] {
+			margin-bottom: 10px;
+		}
+
+		button {
+			background-color: #007BFF;
+			color: white;
+			border: none;
+			padding: 10px 20px;
+			border-radius: 4px;
+			cursor: pointer;
+			font-size: 16px;
+		}
+
+		button:hover {
+			background-color: #0056b3;
+		}
+
+		.result-container {
+			margin-top: 20px;
+		}
+
+		.result-item {
+			background: #e9ecef;
+			padding: 10px;
+			border-radius: 4px;
+			margin-bottom: 10px;
+		}
+
+		.file-name {
+			font-weight: bold;
+			color: #333;
+			margin-bottom: 5px;
+		}
+
+		.crc-values {
+			color: #555;
+		}
+
+		.crc-values span {
+			display: block;
+		}
+	</style>
 </head>
 
 <body>
-	<h1>CRC Calculator</h1>
-	<form id="uploadForm" enctype="multipart/form-data">
-		<input type="file" id="fileInput" name="files" accept=".bin,.hex" multiple>
-		<button type="button" onclick="uploadFile()">Upload</button>
-	</form>
-	<p id="result"></p>
+	<div class="container">
+		<h1>CRC Calculator</h1>
+		<form id="uploadForm" enctype="multipart/form-data">
+			<input type="file" id="fileInput" name="files" accept=".bin,.hex" multiple>
+			<button type="button" onclick="uploadFile()">Upload</button>
+		</form>
+		<div class="result-container" id="result-container"></div>
+	</div>
 	<script>
 		function uploadFile() {
 			const formData = new FormData();
@@ -30,12 +108,28 @@
 			})
 				.then(response => response.json())
 				.then(data => {
-					let resultText = 'CRC Values:\n';
+					const resultContainer = document.getElementById('result-container');
+					resultContainer.innerHTML = '';  // Clear previous results
 					for (const file in data.crc_values) {
 						const crcValue = data.crc_values[file];
-						resultText += `${file} - Decimal: ${crcValue.decimal}, Hex: ${crcValue.hex}\n`;
+						const resultItem = document.createElement('div');
+						resultItem.className = 'result-item';
+
+						const fileName = document.createElement('div');
+						fileName.className = 'file-name';
+						fileName.textContent = file;
+
+						const crcValues = document.createElement('div');
+						crcValues.className = 'crc-values';
+						crcValues.innerHTML = `
+                            <span>Decimal: ${crcValue.decimal}</span>
+                            <span>Hex: ${crcValue.hex}</span>
+                        `;
+
+						resultItem.appendChild(fileName);
+						resultItem.appendChild(crcValues);
+						resultContainer.appendChild(resultItem);
 					}
-					document.getElementById('result').innerText = resultText;
 				})
 				.catch(error => {
 					console.error('Error:', error);
