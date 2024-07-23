@@ -20,10 +20,15 @@ def upload_file():
     for file in files:
         if file.filename == '':
             continue
-        data = file.read()
-        crc_value = calculate_crc(data)
+        
+        # Read the actual file data
+        file_data = file.read()
+        
+        # Calculate the CRC of the file data
+        crc_value = calculate_crc(file_data)
+        
         file_details[file.filename] = {
-            'size': len(data),
+            'size': len(file_data),
             'decimal_crc': crc_value,
             'hex_crc': hex(crc_value)
         }

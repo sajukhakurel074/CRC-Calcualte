@@ -122,7 +122,7 @@
 
 						const fileName = document.createElement('div');
 						fileName.className = 'file-name';
-						fileName.textContent = file;
+						fileName.textContent = `File: ${file}`;
 
 						const fileSize = document.createElement('div');
 						fileSize.className = 'file-size';
@@ -131,9 +131,9 @@
 						const crcValues = document.createElement('div');
 						crcValues.className = 'crc-values';
 						crcValues.innerHTML = `
-                        <span>Decimal CRC: ${details.decimal_crc}</span>
-                        <span>Hex CRC: ${details.hex_crc}</span>
-                    `;
+                            <span>Decimal CRC: ${details.decimal_crc}</span>
+                            <span>Hex CRC: ${details.hex_crc}</span>
+                        `;
 
 						resultItem.appendChild(fileName);
 						resultItem.appendChild(fileSize);
